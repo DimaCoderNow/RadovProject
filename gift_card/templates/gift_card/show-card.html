@@ -1,0 +1,149 @@
+{% load static %}
+{% load url_filtered %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static 'gift-card/img/card-send.svg' %}" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'gift-card/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'gift-card/css/upload.css' %}">
+
+
+    <title>Список карт</title>
+</head>
+<body>
+
+
+    <div class="container show-card">
+    <div class="container-hourglass" id="loading">
+        <div class="hourglass"></div>
+    </div>
+        <a class="lf--submit exit" href="{% url 'logout' %}">ВЫХОД</a>
+
+        <div class="wrapper">
+            <div class="file-upload">
+                <p>ЗАГРУЗИТЬ КАРТЫ</p>
+                <form id="uploadForm" method="post" enctype="multipart/form-data" action="{% url 'add_card' %}">
+                    {% csrf_token %}
+                    {{ form_file.file }}
+                </form>
+            </div>
+        </div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="left-container">
+            <h1 class="last"> {{user.username}}</h1>
+            <form class="find-form" method="get" action="{% url 'show' %}">
+                {{ form.user }}
+                <img class="clear-img" src="{%  static 'gift-card/img/clean.svg' %}" alt="Clear" onclick="clearUser()">
+                {{ form.nominal }}
+                <img class="clear-img" src="{%  static 'gift-card/img/clean.svg' %}" alt="Clear" onclick="clearNominal()">
+                {{ form.number }}
+                <img class="clear-img" src="{%  static 'gift-card/img/clean.svg' %}" alt="Clear" onclick="clearNumber()">
+
+                <input class="lf--submit" type="submit" value="ПОИСК">
+            </form>
+        </div>
+
+        <div style="height: 855px">
+            <table class="stretch-table">
+                <tr>
+                    <th>Магазин</th>
+                    <th>Номер карты</th>
+                    <th>Номинал</th>
+                    <th>Изменена</th>
+                    <th>Добавлена</th>
+                </tr>
+                {% for row in page_obj %}
+                    <tr>
+                        <td>{{ row.user }}</td>
+                        <td>{{ row.number }}</td>
+                        <td>{{ row.nominal }}</td>
+                        <td>{{ row.modified|date:"d.m.y" }}</td>
+                        <td>{{ row.created|date:"d.m.y" }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+              <div class="content-text">
+{% block content %}
+{% endblock %}
+{% if page_obj.has_other_pages %}
+<nav class="list-pages">
+    <ul>
+{% if page_obj.has_previous %}
+<li class="page-num">
+	<a href="{% get_filtered_url page_obj.previous_page_number 'page' request.GET.urlencode %}">&lt;</a>
+</li>
+{% endif %}
+
+        {% for p in paginator.page_range %}
+		{% if page_obj.number == p %}
+        <li class="page-num page-num-selected"><span>{{ p }}</span></li>
+		{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+        <li class="page-num">
+            <a href="{% get_filtered_url p 'page' request.GET.urlencode %}">{{ p }}</a>
+        </li>
+		{% endif %}
+        {% endfor %}
+
+{% if page_obj.has_next %}
+<li class="page-num">
+	<a href="{% get_filtered_url page_obj.next_page_number 'page' request.GET.urlencode %}">&gt;</a>
+</li>
+{% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+	</div>
+        </div>
+    </div>
+    <script>
+
+        const fileInput = document.querySelector('#uploadForm input[type="file"]');
+        const uploadForm = document.getElementById('uploadForm');
+
+        fileInput.addEventListener('change', function () {
+            if (fileInput.files.length > 0) {
+              // Отправить форму
+              uploadForm.submit();
+              showLoading()
+            }
+        });
+        function showLoading() {
+            let loadingElement = document.getElementById("loading");
+            let serverErrorMessage = document.querySelector('.messages');
+            loadingElement.style.display = "grid";
+            serverErrorMessage.style.display = "none";
+        }
+
+        function clearUser() {
+            // Получите элемент поля с id "id_number" и очистите его значение
+            const userField = document.getElementById('id_user');
+            if (userField) {
+                userField.value = '';
+            }
+        }
+        function clearNominal() {
+            // Получите элемент поля с id "id_number" и очистите его значение
+            const nominalField = document.getElementById('id_nominal');
+            if (nominalField) {
+                nominalField.value = '';
+            }
+        }
+        function clearNumber() {
+            // Получите элемент поля с id "id_number" и очистите его значение
+            const numberField = document.getElementById('id_number');
+            if (numberField) {
+                numberField.value = '';
+            }
+        }
+
+    </script>
+</body>
+</html>

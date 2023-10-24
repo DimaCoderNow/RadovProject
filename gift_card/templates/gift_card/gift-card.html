@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static 'gift-card/img/card-send.svg' %}" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'gift-card/css/style.css' %}">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container gift-card">
+
+
+        <a class="lf--submit exit" href="{% url 'logout' %}">ВЫХОД</a>
+
+
+
+        <div class="container-input">
+            <h1 class="last"> {{user.username}} </h1>
+            <hr>
+
+            <h3>Введите номер карты</h3>
+
+            <form method="post">
+                {% csrf_token %}
+            {{ form.number.errors }}
+            <div class="flex-row">
+                <label class="lf--label" for="id_number">
+                    <img src="{%  static 'gift-card/img/card-send.svg' %}" alt="SVG Image">
+                </label>
+                    {{ form.number }}
+            </div>
+            <input class='lf--submit submit' type='submit' value='ОТПРАВИТЬ'>
+
+
+            </form>
+            <p class='lf--forgot' >Всего карт в магазине: {{ count_card }} шт.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

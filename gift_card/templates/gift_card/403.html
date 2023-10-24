@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'gift-card/css/style.css' %}">
+    <style>
+        span {
+            text-align: center;
+            font-size: 80px;
+        }
+        .container{
+            min-width: 22em;
+        }
+    </style>
+    <title>status 403</title>
+</head>
+<body>
+    <div class="container">
+        <h1><span>403</span><br> Отказ в доступе</h1>
+        <p class="errorlist">{{ error_message }}</p>
+    </div>
+</body>
+</html>

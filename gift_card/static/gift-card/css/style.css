@@ -1,0 +1,150 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html, body {
+  height: 100%;
+}
+body {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  font-family: 'Roboto', helvetica, arial, sans-serif;
+  font-size: 1.5em;
+}
+/* Стили input для Chrome и Safari */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important; /* Изменение цвета фона */
+    -webkit-text-fill-color: black !important; /* Изменение цвета текста */
+}
+
+/* Стили input для Firefox */
+input:-moz-placeholder {
+    color: black !important; /* Изменение цвета текста */
+    background-color: white !important; /* Изменение цвета фона */
+}
+
+.container {
+  width: 100%;
+  padding: 2em;
+  position: relative;
+  background: #F8F8F8;
+  box-shadow: 1px 1px 3px 2px #E9E9E9;
+}
+.container.gift-card {
+  padding: 4em;
+}
+.container:before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(to right, #D63E15, #D63E35);
+}
+@media screen and (min-width: 600px) {
+  .container {
+    width: 50vw;
+    max-width: 15em;
+  }
+  .gift-card {
+    max-width: 25em;
+  }
+}
+.flex-row {
+  display: flex;
+  margin-bottom: 1em;
+}
+.lf--label {
+  width: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f6f8;
+  cursor: pointer;
+}
+.lf--input {
+  flex: 1;
+  padding: 1em;
+  border: 0;
+  font-size: 1rem;
+}
+.lf--input:focus {
+  outline: none;
+  transition: transform 0.15s ease;
+  transform: scale(1.1);
+}
+.lf--input.number:focus {
+  transform: scale(1.05);
+}
+.lf--label img {
+  width: 18px;
+}
+.lf--submit {
+  display: block;
+  padding: 1em;
+  width: 100%;
+  background: linear-gradient(to right, #D63E15, #D63E35);
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  margin-top: 40px;
+}
+.submit {
+  margin-top: 60px;
+}
+.lf--submit:focus {
+  outline: none;
+  transition: transform 0.15s ease;
+  transform: scale(1.1);
+}
+.exit {
+    width: 100px;
+    text-align: center;
+    position: absolute;
+    right: -1px;
+    top: 15px;
+    border-radius: 20px 0 0 20px;
+}
+.exit:focus {
+  transform: scale(1.1) translateX(-6px);
+}
+.lf--forgot {
+  margin-top: 2em;
+  color: #D63E15;
+  font-size: 0.65em;
+  text-align: center;
+
+}
+::placeholder {
+  color: #8f8f8f;
+}
+.errorlist {
+    color: #ff4f00;
+    font-size: 20px;
+}
+.errorlist {
+    list-style: none; /* Убираем маркеры списка */
+}
+
+
+.errorlist li::before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url(../img/warning.svg);
+    background-size: cover;
+    margin: 0 12px -5px -28px;
+}
