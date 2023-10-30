@@ -26,7 +26,9 @@ class CardForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['number'].widget.attrs.update({'class': 'lf--input number',
-                                                   'placeholder': 'Номер карты'})
+                                                   'placeholder': 'Номер карты',
+                                                   'autocomplete': 'off',
+                                                   })
 
     def clean_number(self):
         number = self.cleaned_data['number']

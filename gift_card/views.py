@@ -28,7 +28,6 @@ class LoginUser(LoginView):
 @login_required
 def input_card(request):
     user = request.user
-    count_card = Card.objects.filter(user=user).count()
     if request.method == 'POST':
         form = CardForm(request.POST)
         if form.is_valid():
@@ -45,11 +44,13 @@ def input_card(request):
                 new_card.nominal = get_nominal(number)
 
                 new_card.save()
+            messages.success(request, f'Карта {number} отправлена')
         else:
+            count_card = Card.objects.filter(user=user).count()
             return render(request, 'gift_card/gift-card.html', {'form': form, 'count_card': count_card})
 
     form = CardForm()
-
+    count_card = Card.objects.filter(user=user).count()
     return render(request, 'gift_card/gift-card.html', {'form': form, 'count_card': count_card})
 
 
