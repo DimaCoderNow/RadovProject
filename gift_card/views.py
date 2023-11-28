@@ -5,9 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from .forms import CardForm, LoginUserForm, CardSearchForm, FileUploadForm
 from .models import Card
 from .utils import get_nominal, process_txt_file
@@ -112,9 +111,13 @@ def add_card(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect(reverse('login'))
+    return redirect('login')
 
 
 def custom_permission_denied(request, exception):
     error_message = str(exception)
     return render(request, 'gift_card/403.html', status=403, context={"error_message": error_message})
+
+
+def handler404(request, exception):
+    return render(request, 'gift_card/404.html', status=404)

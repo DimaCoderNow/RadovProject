@@ -144,9 +144,8 @@ li.success {
     left: 272px;
     top: 374px;
     font-size: 20px;
-    opacity: 0;
-    transition-delay: 3s;
 }
+
 .errorlist li::before {
     content: "";
     display: inline-block;

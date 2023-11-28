@@ -1,7 +1,7 @@
 {% load static %}
 {% load url_filtered %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="{% static 'gift-card/img/card-send.svg' %}" type="image/svg+xml">
@@ -13,11 +13,10 @@
 </head>
 <body>
 
-
     <div class="container show-card">
-    <div class="container-hourglass" id="loading">
-        <div class="hourglass"></div>
-    </div>
+        <div class="container-hourglass" id="loading">
+            <div class="hourglass"></div>
+        </div>
         <a class="lf--submit exit" href="{% url 'logout' %}">ВЫХОД</a>
 
         <div class="wrapper">
@@ -32,7 +31,7 @@
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -48,61 +47,63 @@
 
                 <input class="lf--submit" type="submit" value="ПОИСК">
             </form>
-        </div>
-
+            </div>
         <div style="height: 830px">
-            <table class="stretch-table">
+        <table class="stretch-table">
+            <tr>
+                <th>Магазин</th>
+                <th>Номер карты</th>
+                <th>Номинал</th>
+                <th>Изменена</th>
+                <th>Добавлена</th>
+            </tr>
+            {% for row in page_obj %}
                 <tr>
-                    <th>Магазин</th>
-                    <th>Номер карты</th>
-                    <th>Номинал</th>
-                    <th>Изменена</th>
-                    <th>Добавлена</th>
+                    <td>{{ row.user }}</td>
+                    <td>{{ row.number }}</td>
+                    <td>{{ row.nominal }}</td>
+                    <td>{{ row.modified|date:"d.m.y" }}</td>
+                    <td>{{ row.created|date:"d.m.y" }}</td>
                 </tr>
-                {% for row in page_obj %}
-                    <tr>
-                        <td>{{ row.user }}</td>
-                        <td>{{ row.number }}</td>
-                        <td>{{ row.nominal }}</td>
-                        <td>{{ row.modified|date:"d.m.y" }}</td>
-                        <td>{{ row.created|date:"d.m.y" }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-              <div class="content-text">
-{% block content %}
-{% endblock %}
-{% if page_obj.has_other_pages %}
-<nav class="list-pages">
-    <ul>
-{% if page_obj.has_previous %}
-<li class="page-num">
-	<a href="{% get_filtered_url page_obj.previous_page_number 'page' request.GET.urlencode %}">&lt;</a>
-</li>
-{% endif %}
+            {% endfor %}
+        </table>
 
-        {% for p in paginator.page_range %}
-		{% if page_obj.number == p %}
-        <li class="page-num page-num-selected"><span>{{ p }}</span></li>
-		{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
-        <li class="page-num">
-            <a href="{% get_filtered_url p 'page' request.GET.urlencode %}">{{ p }}</a>
-        </li>
-		{% endif %}
-        {% endfor %}
+        {% if page_obj.has_other_pages %}
+            <nav class="list-pages">
+            <ul>
+            {% if page_obj.has_previous %}
+                <li class="page-num">
+                    <a href="{% get_filtered_url page_obj.previous_page_number 'page' request.GET.urlencode %}">&lt;</a>
+                </li>
+            {% endif %}
+            {% spaceless %}
+            {% for p in  page_obj.paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <li class="page-num page-num-selected">
+                        <span>{{ p }}</span>
+                    </li>
+                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+                    <li class="page-num">
+                        <a href="{% get_filtered_url p 'page' request.GET.urlencode %}">{{ p }}</a>
+                    </li>
+                    {%  else %}
+                {% endif %}
+            {% endfor %}
+            {% endspaceless %}
 
-{% if page_obj.has_next %}
-<li class="page-num">
-	<a href="{% get_filtered_url page_obj.next_page_number 'page' request.GET.urlencode %}">&gt;</a>
-</li>
-{% endif %}
+            {% if page_obj.has_next %}
+                <li class="page-num">
+                    <a href="{% get_filtered_url page_obj.next_page_number 'page' request.GET.urlencode %}">&gt;</a>
+                </li>
+            {% endif %}
 
-    </ul>
-</nav>
-{% endif %}
-	</div>
-        </div>
+            </ul>
+            </nav>
+        {% endif %}
+	    </div>
+
     </div>
+
     <script>
 
         const fileInput = document.querySelector('#uploadForm input[type="file"]');
@@ -143,7 +144,7 @@
                 numberField.value = '';
             }
         }
-
     </script>
+
 </body>
 </html>

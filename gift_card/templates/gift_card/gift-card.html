@@ -44,6 +44,17 @@
         </div>
 
     </div>
+<script>
+    const messagesElement = document.querySelector('.messages');
+    const inputElement = document.getElementById('id_number');
+
+    // Добавляем обработчик события focus на окно ввода
+    inputElement.addEventListener('focus', () => {
+        // Скрываем элемент сообщений
+        messagesElement.style.display = 'none';
+    });
+
+</script>
 
 </body>
 </html>

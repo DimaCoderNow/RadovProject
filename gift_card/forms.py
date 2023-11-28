@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
+
 from .models import Card
 from .utils import not_valid_number
 
@@ -19,19 +20,25 @@ class LoginUserForm(AuthenticationForm):
 
 
 class CardForm(forms.ModelForm):
+
     class Meta:
         model = Card
         fields = ['number']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['number'].widget.attrs.update({'class': 'lf--input number',
-                                                   'placeholder': 'Номер карты',
-                                                   'autocomplete': 'off',
-                                                   })
+        widgets = {
+            'number': forms.TextInput(
+                attrs={'class': 'lf--input custom-class',
+                       'placeholder': 'Номер карты',
+                       'autocomplete': 'off',
+                       })
+        }
+        error_messages = {
+            'number': {
+                'required': 'Вы не ввели номер карты',
+            }
+        }
 
     def clean_number(self):
-        number = self.cleaned_data['number']
+        number = self.cleaned_data['number'].strip()
 
         not_valid_info = not_valid_number(number)
         if not_valid_info:
@@ -43,23 +50,23 @@ class CardForm(forms.ModelForm):
 class CardSearchForm(forms.Form):
     user = forms.ModelChoiceField(
         queryset=User.objects.all(),
-        empty_label="Все магазины",  # Здесь изменяем текст опции
-        required=False
-    )
-    number = forms.CharField(max_length=16, required=False, label="Номер карты")
-    nominal = forms.ChoiceField(
-        choices=[(None, 'Номинал'), (500, '500'), (1000, '1000'), (2000, '2000'), (3000, '3000'), (4000, '4000'),
-                 (5000, '5000')],
+        empty_label="Все магазины",
         required=False,
-        label="Номинал"
+        widget=forms.Select(attrs={'class': 'lf--input'})
     )
+    number = forms.CharField(
+        max_length=16,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'lf--input number',
+                                      'placeholder': 'Номер карты'})
+    )
+    nominal = forms.ChoiceField(
+        choices=[(None, 'Номинал'), (500, '500'), (1000, '1000'), (2000, '2000'),
+                 (3000, '3000'), (4000, '4000'), (5000, '5000')],
+        required=False,
+        widget=forms.Select(attrs={'class': 'lf--input'})
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['user'].widget.attrs.update({'class': 'lf--input'})
-        self.fields['nominal'].widget.attrs.update({'class': 'lf--input'})
-        self.fields['number'].widget.attrs.update({'class': 'lf--input number',
-                                                   'placeholder': 'Номер карты'})
+    )
 
 
 class FileUploadForm(forms.Form):

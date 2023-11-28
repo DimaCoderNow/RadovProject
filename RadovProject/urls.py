@@ -21,11 +21,13 @@ from gift_card import views as gift_card
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', tabel.show_table, name='tabel'),
+    path('', gift_card.input_card, name='card'),
     path('card/', gift_card.input_card, name='card'),
     path('show-card/', gift_card.show_card, name='show'),
     path('add-card/', gift_card.add_card, name='add_card'),
     path('login/', gift_card.LoginUser.as_view(), name='login'),
     path('logout/', gift_card.logout_user, name='logout'),
 ]
+
 handler403 = 'gift_card.views.custom_permission_denied'
+handler404 = 'gift_card.views.handler404'
