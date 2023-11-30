@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tabel import views as tabel
 from gift_card import views as gift_card
 
 urlpatterns = [

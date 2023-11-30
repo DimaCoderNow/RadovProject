@@ -17,17 +17,13 @@ def get_nominal(num):
 
 def not_valid_number(number):
     if number[-1] == " ":
-        print("whitespace")
         return "Уберите пробел в конце номера"
     if not number.isdigit():
-        print("Alpha")
         return "Номер не должен содержать буквы или пробелы."
     if len(number) not in (8, 13):
-        print("Shorts")
         return "Номер должен содержать 8 или 13 символов."
     index = 0
     if number[:2] == "39":
-        print(number[:2])
         index = 2
     if number[index] in "123456":
         return False

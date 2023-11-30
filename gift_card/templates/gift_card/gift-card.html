@@ -29,14 +29,14 @@
 
             <form method="post">
                 {% csrf_token %}
-            {{ form.number.errors }}
-            <div class="flex-row">
-                <label class="lf--label" for="id_number">
-                    <img src="{%  static 'gift-card/img/card-send.svg' %}" alt="SVG Image">
-                </label>
-                    {{ form.number }}
-            </div>
-            <input class='lf--submit submit' type='submit' value='ОТПРАВИТЬ'>
+                {{ form.number.errors }}
+                <div class="flex-row">
+                    <label class="lf--label" for="id_number">
+                        <img src="{%  static 'gift-card/img/card-send.svg' %}" alt="SVG Image">
+                    </label>
+                        {{ form.number }}
+                </div>
+                <input class='lf--submit submit' type='submit' value='ОТПРАВИТЬ'>
 
 
             </form>
@@ -50,8 +50,10 @@
 
     // Добавляем обработчик события focus на окно ввода
     inputElement.addEventListener('focus', () => {
-        // Скрываем элемент сообщений
-        messagesElement.style.display = 'none';
+        // Скрываем элемент сообщений при его наличии
+        if (messagesElement) {
+            messagesElement.style.display = 'none';
+        }
     });
 
 </script>

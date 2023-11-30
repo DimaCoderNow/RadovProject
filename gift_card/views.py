@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -74,7 +74,7 @@ def show_card(request):
 
         form_file = FileUploadForm()
 
-        table = Card.objects.filter(**filter_params)
+        table = Card.objects.select_related("user").filter(**filter_params)
 
         paginator = Paginator(table, 20)
 
